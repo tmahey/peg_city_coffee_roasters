@@ -1,0 +1,39 @@
+<h1>Shopping Cart</h1>
+
+<% if @items.any? %>
+  <table border="1" cellpadding="8" cellspacing="0" width="100%">
+    <thead>
+      <tr>
+        <th>Product</th>
+        <th>Price</th>
+        <th>Quantity</th>
+        <th>Line Total</th>
+        <th>Remove</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @items.each do |item| %>
+        <% product = item[:product] %>
+        <tr>
+          <td><%= link_to product.title, product_path(product) %></td>
+          <td><%= number_to_currency(product.price) %></td>
+          <td>
+            <%= form_with url: update_item_cart_path(product_id: product.id), method: :patch, local: true do |f| %>
+              <%= f.number_field :quantity, value: item[:quantity], min: 1 %>
+              <%= f.submit "Update" %>
+            <% end %>
+          </td>
+          <td><%= number_to_currency(item[:line_total]) %></td>
+          <td>
+            <%= button_to "Remove", remove_item_cart_path(product_id: product.id), method: :delete %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+
+  <p><strong>Subtotal: <%= number_to_currency(cart_subtotal) %></strong></p>
+  <p><%= link_to "Proceed to Checkout", new_checkout_path %></p>
+<% else %>
+  <p>Your cart is empty. <%= link_to "Browse products", root_path %></p>
+<% end %>

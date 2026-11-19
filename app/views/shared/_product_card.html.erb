@@ -1,0 +1,7 @@
+<div style="border: 1px solid #ddd; padding: 16px; margin-bottom: 16px;">
+  <small><%= product.category.name %></small>
+  <h3><%= link_to product.title, product_path(product) %></h3>
+  <p><%= truncate(product.description, length: 100) %></p>
+  <p><strong><%= number_to_currency(product.price) %></strong></p>
+  <%= button_to "Add to Cart", add_to_cart_path(product_id: product.id), method: :post %>
+</div>

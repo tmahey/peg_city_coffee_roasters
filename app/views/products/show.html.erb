@@ -1,0 +1,11 @@
+<p><%= link_to "Back to Products", root_path %></p>
+<h1><%= @product.title %></h1>
+<p><strong>Category:</strong> <%= @product.category.name %></p>
+<p><%= @product.description %></p>
+<p><strong>Price:</strong> <%= number_to_currency(@product.price) %></p>
+<p><strong>In Stock:</strong> <%= @product.stock_quantity %></p>
+
+<%= form_with url: add_to_cart_path(product_id: @product.id), method: :post, local: true do |f| %>
+  <%= f.number_field :quantity, value: 1, min: 1 %>
+  <%= f.submit "Add to Cart" %>
+<% end %>

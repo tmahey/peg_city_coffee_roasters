@@ -1,0 +1,27 @@
+<h1>Order Invoice</h1>
+<p><strong>Ship To:</strong> <%= @customer.name %> — <%= @customer.address %>, <%= @customer.city %>, <%= @province.code %> <%= @customer.postal_code %></p>
+
+<table border="1" cellpadding="8" cellspacing="0" width="100%">
+  <thead>
+    <tr><th>Product</th><th>Qty</th><th>Price</th><th>Total</th></tr>
+  </thead>
+  <tbody>
+    <% @items.each do |item| %>
+      <tr>
+        <td><%= item[:product].title %></td>
+        <td><%= item[:quantity] %></td>
+        <td><%= number_to_currency(item[:product].price) %></td>
+        <td><%= number_to_currency(item[:line_total]) %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<p>Subtotal: <%= number_to_currency(@subtotal) %></p>
+<p>GST: <%= number_to_currency(@gst_amount) %></p>
+<p>PST: <%= number_to_currency(@pst_amount) %></p>
+<p>HST: <%= number_to_currency(@hst_amount) %></p>
+<h3>Grand Total: <%= number_to_currency(@total_price) %></h3>
+
+<%= button_to "Place Order", place_order_checkout_path, method: :post %>
+
