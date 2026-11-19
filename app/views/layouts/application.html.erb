@@ -18,6 +18,10 @@
   </head>
 
   <body>
-    <%= yield %>
+    <%= render "shared/navbar" %>
+    <main style="max-width: 1000px; margin: 24px auto; padding: 0 16px;">
+      <%= render "shared/flash" %>
+      <%= yield %>
+    </main>
   </body>
 </html>

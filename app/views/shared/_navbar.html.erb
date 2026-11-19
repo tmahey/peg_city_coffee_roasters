@@ -1,0 +1,18 @@
+<nav style="padding: 12px; background: #2c1e16; color: white; display: flex; justify-content: space-between; align-items: center;">
+  <div>
+    <%= link_to "Peg City Coffee Roasters", root_path, style: "color: white; font-weight: bold; margin-right: 16px;" %>
+    <% @nav_categories.each do |category| %>
+      <%= link_to category.name, category_path(category), style: "color: #f5deb3; margin-right: 12px;" %>
+    <% end %>
+  </div>
+
+  <%= form_with url: products_path, method: :get, local: true do |f| %>
+    <%= f.text_field :keyword, value: params[:keyword], placeholder: "Search coffee..." %>
+    <%= f.select :category_id, options_from_collection_for_select(@nav_categories, :id, :name, params[:category_id]), include_blank: "All Categories" %>
+    <%= f.submit "Search" %>
+  <% end %>
+
+  <div>
+    <%= link_to "Cart (#{cart_count})", cart_path, style: "color: #ffd700; font-weight: bold;" %>
+  </div>
+</nav>
