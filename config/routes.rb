@@ -1,4 +1,7 @@
 Rails.application.routes.draw do
+  get "checkout/new"
+  get "cart/show"
+  get "categories/show"
   devise_for :admin_users, ActiveAdmin::Devise.config
   ActiveAdmin.routes(self)
 
