@@ -1,2 +1,19 @@
-<h1>Checkout#new</h1>
-<p>Find me in app/views/checkout/new.html.erb</p>
+<h1>Checkout — Shipping Address</h1>
+
+<%= form_with model: @customer, url: checkout_path, method: :post, local: true do |f| %>
+  <% if @customer.errors.any? %>
+    <ul>
+      <% @customer.errors.full_messages.each do |msg| %>
+        <li style="color: red;"><%= msg %></li>
+      <% end %>
+    </ul>
+  <% end %>
+
+  <p><%= f.label :name %><br><%= f.text_field :name, required: true %></p>
+  <p><%= f.label :email %><br><%= f.email_field :email, required: true %></p>
+  <p><%= f.label :address %><br><%= f.text_field :address, required: true %></p>
+  <p><%= f.label :city %><br><%= f.text_field :city, required: true %></p>
+  <p><%= f.label :postal_code %><br><%= f.text_field :postal_code, placeholder: "R3B 0Y2", required: true %></p>
+  <p><%= f.label :province_id, "Province" %><br><%= f.collection_select :province_id, @provinces, :id, :name, prompt: "Select Province" %></p>
+  <p><%= f.submit "Review Invoice" %></p>
+<% end %>
