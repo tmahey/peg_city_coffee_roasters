@@ -36,7 +36,7 @@ if Product.count < 104
   (104 - Product.count).times do |i|
     cat = categories[i % categories.length]
     Product.create!(
-      title: "#{Faker::Coffee.origin} #{Faker::Coffee.blend_name} ##{i + 1}",
+      title: "#{Faker::Coffee.origin} #{Faker::Coffee.blend_name}",
       description: "Small-batch roasted in Winnipeg by Peg City Coffee Roasters. Notes: #{Faker::Coffee.notes}.",
       price: rand(16.50..38.00).round(2),
       stock_quantity: rand(5..50),
