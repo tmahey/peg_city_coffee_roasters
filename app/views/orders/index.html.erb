@@ -1,0 +1,22 @@
+<h1>My Past Orders</h1>
+
+<% if @orders.any? %>
+  <% @orders.each do |order| %>
+    <div style="border: 1px solid #ddd; padding: 16px; margin-bottom: 16px;">
+      <h3>Order <%= order.id %> &mdash; <%= order.status.upcase %> (<%= order.created_at.strftime("%B %d, %Y") %>)</h3>
+      <ul>
+        <% order.order_items.each do |item| %>
+          <li><%= item.product.title %> &times; <%= item.quantity %> (<%= number_to_currency(item.price_at_purchase) %>)</li>
+        <% end %>
+      </ul>
+      <p>
+        Subtotal: <%= number_to_currency(order.subtotal) %> |
+        Taxes: <%= number_to_currency(order.total_taxes) %> |
+        <strong>Grand Total: <%= number_to_currency(order.total_price) %></strong>
+      </p>
+      <p><%= link_to "View Full Invoice", order_path(order) %></p>
+    </div>
+  <% end %>
+<% else %>
+  <p>You haven't placed any orders yet. <%= link_to "Browse products", root_path %></p>
+<% end %>

@@ -2,8 +2,19 @@ class CheckoutController < ApplicationController
   before_action :ensure_cart_not_empty
 
   def new
-    @customer = Customer.new
     @provinces = Province.order(:name)
+    if user_signed_in?
+      @customer = Customer.new(
+        name: current_user.name,
+        email: current_user.email,
+        address: current_user.address,
+        city: current_user.city,
+        postal_code: current_user.postal_code,
+        province_id: current_user.province_id
+      )
+    else
+      @customer = Customer.new
+    end
   end
 
   def create
@@ -11,6 +22,14 @@ class CheckoutController < ApplicationController
     @customer = Customer.new(customer_params)
 
     if @customer.save
+      if user_signed_in? && !current_user.address_complete?
+        current_user.update(
+          address: @customer.address,
+          city: @customer.city,
+          postal_code: @customer.postal_code,
+          province_id: @customer.province_id
+        )
+      end
       session[:checkout_customer_id] = @customer.id
       redirect_to invoice_checkout_path
     else
@@ -43,16 +62,31 @@ class CheckoutController < ApplicationController
     total = (subtotal + gst + pst + hst).round(2)
 
     order = Order.create!(
-      customer: @customer, province: province, status: "pending",
-      subtotal: subtotal, gst_amount: gst, pst_amount: pst, hst_amount: hst, total_price: total
+      customer: @customer,
+      user: current_user,
+      province: province,
+      status: "pending",
+      subtotal: subtotal,
+      gst_amount: gst,
+      pst_amount: pst,
+      hst_amount: hst,
+      total_price: total
     )
 
     cart_items.each do |item|
-      order.order_items.create!(product: item[:product], quantity: item[:quantity], price_at_purchase: item[:product].price)
+      order.order_items.create!(
+        product: item[:product],
+        quantity: item[:quantity],
+        price_at_purchase: item[:product].price
+      )
     end
 
     session[:cart] = {}
-    redirect_to root_path, notice: "Order ##{order.id} placed! Total: $#{total}"
+    if user_signed_in?
+      redirect_to order_path(order), notice: "Order placed! Total: $#{format('%.2f', total)}"
+    else
+      redirect_to root_path, notice: "Order placed! Total: $#{format('%.2f', total)}"
+    end
   end
 
   private

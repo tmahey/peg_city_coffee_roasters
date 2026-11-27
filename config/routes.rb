@@ -1,7 +1,5 @@
 Rails.application.routes.draw do
-  get "checkout/new"
-  get "cart/show"
-  get "categories/show"
+  devise_for :users
   devise_for :admin_users, ActiveAdmin::Devise.config
   ActiveAdmin.routes(self)
 
@@ -9,6 +7,7 @@ Rails.application.routes.draw do
 
   resources :products, only: [ :index, :show ]
   resources :categories, only: [ :show ]
+  resources :orders, only: [ :index, :show ]
 
   resource :cart, only: [ :show ], controller: "cart" do
     post "add/:product_id", to: "cart#add", as: :add_to
