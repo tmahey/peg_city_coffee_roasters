@@ -1,2 +1,14 @@
 <h1>Peg City Coffee Roasters</h1>
+
+<div style="margin-bottom: 16px;">
+  <%= link_to "All", products_path %> |
+  <%= link_to "On Sale", products_path(filter: "on_sale") %> |
+  <%= link_to "New (Past 3 Days)", products_path(filter: "new") %> |
+  <%= link_to "Recently Updated", products_path(filter: "recently_updated") %>
+</div>
+
 <%= render partial: "shared/product_card", collection: @products, as: :product %>
+
+<div style="margin-top: 16px;">
+  <%= paginate @products %>
+</div>
