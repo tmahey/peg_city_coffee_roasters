@@ -19,6 +19,10 @@ class Product < ApplicationRecord
     where("title LIKE :term OR description LIKE :term", term: term)
   }
 
+  def effective_price
+    on_sale && sale_price.present? ? sale_price : price
+  end
+
   def self.ransackable_attributes(_auth_object = nil)
     %w[category_id created_at description id on_sale price sale_price stock_quantity title updated_at]
   end

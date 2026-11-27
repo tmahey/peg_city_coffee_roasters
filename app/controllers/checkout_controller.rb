@@ -77,7 +77,7 @@ class CheckoutController < ApplicationController
       order.order_items.create!(
         product: item[:product],
         quantity: item[:quantity],
-        price_at_purchase: item[:product].price
+        price_at_purchase: item[:product].effective_price
       )
     end
 

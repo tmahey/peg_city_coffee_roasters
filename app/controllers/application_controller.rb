@@ -31,7 +31,7 @@ class ApplicationController < ActionController::Base
       product = products[product_id.to_s]
       next unless product
 
-      { product: product, quantity: qty.to_i, line_total: product.price * qty.to_i }
+      { product: product, quantity: qty.to_i, line_total: product.effective_price * qty.to_i }
     end
   end
 
