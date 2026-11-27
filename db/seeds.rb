@@ -36,7 +36,7 @@ if Product.count < 104
   (104 - Product.count).times do |i|
     cat = categories[i % categories.length]
     Product.create!(
-      title: "#{Faker::Coffee.origin} #{Faker::Coffee.blend_name} ##{i + 1}",
+      title: "#{Faker::Coffee.origin} #{Faker::Coffee.blend_name}",
       description: "Small-batch roasted in Winnipeg by Peg City Coffee Roasters. Notes: #{Faker::Coffee.notes}.",
       price: rand(16.50..38.00).round(2),
       stock_quantity: rand(5..50),
@@ -46,3 +46,12 @@ if Product.count < 104
 end
 
 puts "Seeded #{Province.count} provinces, #{Category.count} categories, and #{Product.count} products."
+
+Page.find_or_initialize_by(slug: "about").update!(
+  title: "About Peg City Coffee Roasters",
+  content: "Peg City Coffee Roasters is a Winnipeg specialty coffee roastery operating for 5 years with 8 dedicated team members."
+)
+Page.find_or_initialize_by(slug: "contact").update!(
+  title: "Contact Us",
+  content: "Visit us at 420 Main Street, Winnipeg, MB or email hello@pegcitycoffee.ca."
+)

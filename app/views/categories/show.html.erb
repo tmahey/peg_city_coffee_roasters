@@ -1,3 +1,6 @@
 <h1><%= @category.name %></h1>
 <p><%= @category.description %></p>
 <%= render partial: "shared/product_card", collection: @products, as: :product %>
+<div style="margin-top: 16px;">
+  <%= paginate @products %>
+</div>
